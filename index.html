@@ -4,62 +4,44 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>카카오톡 메시지 공유</title>
-  <!-- Kakao JS SDK -->
   <script src="https://developers.kakao.com/sdk/js/kakao.min.js"></script>
   <style>
-    body {
-      font-family: system-ui, -apple-system, 'Segoe UI', Roboto, 'Noto Sans KR', sans-serif;
-      padding: 40px;
-      text-align: center;
-    }
-    .kakao-btn {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      padding: 12px 18px;
-      border: none;
-      border-radius: 8px;
-      background-color: #fae100;
-      cursor: pointer;
-      font-size: 16px;
-      font-weight: bold;
-    }
-    .kakao-btn img {
-      width: 28px;
-      height: 28px;
-      display: block;
-    }
+    body {font-family: system-ui, -apple-system, 'Segoe UI', Roboto, 'Noto Sans KR', sans-serif; padding: 40px; text-align: center;}
+    .kakao-btn {display:inline-flex;align-items:center;gap:8px;padding:12px 18px;border:none;border-radius:12px;background:#fae100;cursor:pointer;font-size:16px;font-weight:700;}
+    .kakao-btn img {width:28px;height:28px;display:block;}
   </style>
 </head>
 <body>
   <h2>카카오톡으로 메시지 보내기</h2>
-  <p>아래 버튼을 누르면 카카오톡 공유창이 열리고,<br>카드 버튼을 누르면 미리캔버스로 이동합니다.</p>
+  <p>버튼을 누르면 카카오톡 공유창이 열리고,<br>대화방을 선택하면 “이미지 + 버튼” 카드가 전송됩니다.</p>
 
-  <!-- 버튼 -->
   <button class="kakao-btn" onclick="shareKakao()">
-    <img src="https://developers.kakao.com/assets/img/about/logos/kakaolink/kakaolink_btn_medium.png" alt="Kakao">
+    <img src="https://developers.kakao.com/assets/img/about/logos/kakaolink/kakaolink_btn_medium.png" alt="">
     카카오톡 공유하기
   </button>
 
   <script>
-    // 1) 카카오 SDK 초기화 (반드시 JavaScript 키 사용)
+    // 1) SDK 초기화 (반드시 JavaScript 키)
     if (window.Kakao && !Kakao.isInitialized()) {
-      Kakao.init('b9a150ba7c273d7bc9534df138b54c6e'); // 본인 JavaScript 키로 교체 가능
+      Kakao.init('b9a150ba7c273d7bc9534df138b54c6e'); // ← 본인 JS 키
     }
 
-    // 2) 공유 함수
+    // 2) 공유 함수: "카톡 카드(이미지+버튼)" 전송
     function shareKakao() {
       Kakao.Share.sendDefault({
         objectType: 'feed',
         content: {
           title: '부산 오션뷰 상가 매입제안서',
-          description: '상가 자세히 보러가기 ▶',
+          description: '단 하루 특가 • 상세 확인은 버튼 클릭',
+          // 메시지 카드에 보이는 이미지(네가 올린 파일)
           imageUrl: 'https://vininebeauty2020-ai.github.io/building-project/busan.png',
+          // 카드 자체를 눌렀을 때도 이동할 링크
           link: {
             webUrl: 'https://www.miricanvas.com/v2/design2/v/a173f7ca-39e0-419e-be44-f971407cfc90',
             mobileWebUrl: 'https://www.miricanvas.com/v2/design2/v/a173f7ca-39e0-419e-be44-f971407cfc90'
           }
         },
+        // 카드 하단 버튼(최대 2개)
         buttons: [
           {
             title: '상가 자세히 보러가기 ▶',
@@ -68,10 +50,10 @@
               mobileWebUrl: 'https://www.miricanvas.com/v2/design2/v/a173f7ca-39e0-419e-be44-f971407cfc90'
             }
           }
+          // 두 번째 버튼 필요하면 여기에 추가
         ]
       });
     }
   </script>
 </body>
 </html>
-
