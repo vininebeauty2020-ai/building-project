@@ -2,135 +2,69 @@
 <html lang="ko">
 <head>
   <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>부산 오션뷰 상가 안내</title>
 
-  <!-- Kakao JS SDK (공유용) -->
+  <!-- Kakao JS SDK -->
   <script src="https://developers.kakao.com/sdk/js/kakao.min.js"></script>
 
   <style>
-    :root { --yellow:#fae100; --text:#111; --muted:#666; --border:#eee; }
-    * { box-sizing: border-box; }
-    body { margin:0; font-family: system-ui,-apple-system,'Segoe UI',Roboto,'Noto Sans KR',sans-serif; color:var(--text); background:#fff; }
-    .wrap { max-width:720px; margin:0 auto; padding:16px; }
-
-    /* 헤더 */
-    .title { font-size:22px; font-weight:800; text-align:center; margin:8px 0 12px; }
-    .desc  { color:var(--muted); font-size:14px; text-align:center; margin-bottom:16px; }
-
-    /* 히어로 */
-    .hero { width:100%; border-radius:16px; box-shadow:0 2px 8px rgba(0,0,0,.06); object-fit:cover; }
-
-    /* 갤러리 (모바일 스와이프) */
-    .gallery { margin:16px 0 8px; position:relative; }
-    .track {
-      display:flex; gap:10px; overflow-x:auto; scroll-snap-type:x mandatory;
-      -webkit-overflow-scrolling: touch; padding-bottom:8px;
+    :root { --yellow:#fae100; --text:#111; --muted:#666; }
+    * { box-sizing:border-box; }
+    body { margin:0; font-family:system-ui,-apple-system,'Segoe UI',Roboto,'Noto Sans KR',sans-serif; color:var(--text); }
+    .wrap { max-width:720px; margin:0 auto; padding:40px 20px; text-align:center; }
+    h1 { margin:0 0 10px; font-size:24px; }
+    p  { margin:0 0 24px; color:var(--muted); }
+    .btn-kakao {
+      display:inline-flex; align-items:center; gap:8px;
+      padding:14px 18px; border:0; border-radius:12px; background:var(--yellow);
+      font-weight:800; cursor:pointer; font-size:16px;
     }
-    .track::-webkit-scrollbar { display:none; }
-    .slide {
-      flex:0 0 86%; scroll-snap-align:center;
-      border-radius:16px; overflow:hidden; border:1px solid var(--border);
-      box-shadow:0 2px 8px rgba(0,0,0,.05);
-    }
-    .slide img { width:100%; height:260px; object-fit:cover; display:block; }
-
-    .dots { display:flex; justify-content:center; gap:6px; margin:8px 0 0; }
-    .dot { width:8px; height:8px; border-radius:50%; background:#ddd; }
-    .dot.active { background:#999; }
-
-    /* 버튼 공통 */
-    .btn { width:100%; display:flex; align-items:center; justify-content:center; gap:8px;
-           padding:14px 16px; border:none; border-radius:12px; font-weight:700; font-size:16px; cursor:pointer; }
-    .btn:active { transform: translateY(1px); }
-    .btn-primary { background:var(--yellow); }
-    .btn-outline { background:#fff; border:1px solid var(--border); }
-
-    .row { display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-top:10px; }
-
-    .card { border:1px solid var(--border); border-radius:16px; padding:14px; margin-top:12px; }
-    .small { font-size:13px; color:var(--muted); }
-
-    .footer { text-align:center; color:#aaa; font-size:12px; margin:18px 0; }
+    .btn-kakao img { width:28px; height:28px; display:block; }
+    .thumb { width:100%; max-width:560px; border-radius:16px; box-shadow:0 2px 8px rgba(0,0,0,.06); margin:0 auto 18px; display:block; }
   </style>
 </head>
 <body>
   <div class="wrap">
-    <h1 class="title">부산 오션뷰 상가</h1>
-    <p class="desc">이미지 갤러리를 살펴보고, 전화 문의 또는 카카오톡 공유를 이용하세요.</p>
+    <h1>부산 오션뷰 상가</h1>
+    <p>아래 버튼을 누르면 카카오톡으로 “이미지 + 설명 + 버튼2개” 카드가 전송됩니다.</p>
 
-    <!-- 히어로 이미지 -->
-    <img class="hero" src="https://vininebeauty2020-ai.github.io/building-project/busan.png" alt="대표 이미지" />
+    <!-- 썸네일 미리보기(선택) -->
+    <img class="thumb" src="https://vininebeauty2020-ai.github.io/building-project/busan.png" alt="대표 이미지" />
 
-    <!-- 이미지 갤러리 -->
-    <section class="gallery" aria-label="이미지 갤러리">
-      <div class="track" id="track">
-        <figure class="slide"><img src="https://vininebeauty2020-ai.github.io/building-project/1.png" /></figure>
-        <figure class="slide"><img src="https://vininebeauty2020-ai.github.io/building-project/4.png" /></figure>
-        <figure class="slide"><img src="https://vininebeauty2020-ai.github.io/building-project/5.png" /></figure>
-        <figure class="slide"><img src="https://vininebeauty2020-ai.github.io/building-project/7.png" /></figure>
-      </div>
-      <div class="dots" id="dots" aria-hidden="true">
-        <span class="dot active"></span>
-        <span class="dot"></span>
-        <span class="dot"></span>
-      </div>
-    </section>
-
-    <!-- 액션 버튼 -->
-    <div class="row">
-      <!-- 전화 연결: 번호를 실제 번호로 바꾸세요 -->
-      <a class="btn btn-primary" href="tel:01033864259">전화로 문의하기</a>
-
-      <!-- 카카오톡 공유: 카드(이미지+버튼) 전송 -->
-      <button class="btn btn-outline" onclick="shareKakao()">카카오톡으로 공유</button>
-    </div>
-
-    <!-- (선택) 복사 버튼 예시: 계좌/주소 등 -->
-    <div class="card">
-      <div style="display:flex;justify-content:space-between;align-items:center;gap:10px;">
-        <div>
-          <div style="font-weight:700;">상세 페이지 링크</div>
-          <div class="small">미리캔버스 디자인</div>
-          <div class="small" id="shareLink">https://www.miricanvas.com/v2/design2/v/a173f7ca-39e0-419e-be44-f971407cfc90</div>
-        </div>
-        <button class="btn btn-outline" style="width:auto;padding:10px 12px;" onclick="copyLink()">복사</button>
-      </div>
-    </div>
-
-    <p class="footer">© 2025 Vininebeauty</p>
+    <!-- 카카오톡 공유 버튼 -->
+    <button class="btn-kakao" onclick="shareKakao()">
+      <img src="https://developers.kakao.com/assets/img/about/logos/kakaolink/kakaolink_btn_medium.png" alt="">
+      카카오톡으로 공유하기
+    </button>
   </div>
 
-<script>
-  if (window.Kakao && !Kakao.isInitialized()) {
-    Kakao.init('b9a150ba7c273d7bc9534df138b54c6e'); // 본인 JS 키
-  }
+  <script>
+    // 1) Kakao SDK 초기화 (반드시 JavaScript 키)
+    if (window.Kakao && !Kakao.isInitialized()) {
+      Kakao.init('b9a150ba7c273d7bc9534df138b54c6e'); // 본인 JS 키
+    }
 
-  function shareKakao() {
-    const detailUrl = 'https://www.miricanvas.com/v2/design2/v/a173f7ca-39e0-419e-be44-f971407cfc90';
-    const callPage  = 'https://vininebeauty2020-ai.github.io/building-project/call.html'; // ↓ 2단계에서 만들 거
+    // 2) 공유: 카드(이미지 + 설명 + 버튼 2개)
+    function shareKakao() {
+      // 두 버튼 모두 "내 도메인"으로 보내 안전하게 유지
+      const detailPage = 'https://vininebeauty2020-ai.github.io/building-project/detail.html';
+      const callPage   = 'https://vininebeauty2020-ai.github.io/building-project/call.html';
 
-    Kakao.Share.sendDefault({
-      objectType: 'feed',
-      content: {
-        title: '부산 오션뷰 상가 매입제안서',
-        description: '이미지나 버튼을 누르면 상세페이지로 이동합니다.',
-        imageUrl: 'https://vininebeauty2020-ai.github.io/building-project/busan.png',
-        link: { webUrl: detailUrl, mobileWebUrl: detailUrl } // 이미지/제목 눌러도 이동
-      },
-      buttons: [
-        { // 버튼 1: 상세보기(미리캔버스)
-          title: '상가 자세히 보기',
-          link: { webUrl: detailUrl, mobileWebUrl: detailUrl }
+      Kakao.Share.sendDefault({
+        objectType: 'feed',
+        content: {
+          title: '부산 오션뷰 상가 매입제안서',
+          description: '이미지나 버튼을 누르면 이동합니다.',
+          imageUrl: 'https://vininebeauty2020-ai.github.io/building-project/busan.png',
+          link: { webUrl: detailPage, mobileWebUrl: detailPage } // 카드 전체 클릭 시
         },
-        { // 버튼 2: 문의하기(전화 전용 미니 페이지로)
-          title: '전화문의',
-          link: { webUrl: callPage, mobileWebUrl: callPage }
-        }
-      ]
-    });
-  }
-</script>
-
+        buttons: [
+          { title: '상가 자세히 보기', link: { webUrl: detailPage, mobileWebUrl: detailPage } },
+          { title: '전화문의',       link: { webUrl: callPage,   mobileWebUrl: callPage   } }
+        ]
+      });
+    }
+  </script>
 </body>
 </html>
