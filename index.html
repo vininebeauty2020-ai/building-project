@@ -101,55 +101,36 @@
     <p class="footer">© 2025 Vininebeauty</p>
   </div>
 
-  <script>
-    // 0) 갤러리 인디케이터
-    (function(){
-      const track = document.getElementById('track');
-      const dots = Array.from(document.getElementById('dots').children);
-      function updateDots(){
-        // 현재 중앙에 가장 가까운 슬라이드 인덱스 계산
-        const slides = Array.from(track.children);
-        const mid = track.scrollLeft + track.clientWidth/2;
-        let idx = 0, min=Infinity;
-        slides.forEach((el,i)=> {
-          const center = el.offsetLeft + el.clientWidth/2;
-          const d = Math.abs(center - mid);
-          if (d < min) { min=d; idx=i; }
-        });
-        dots.forEach((d,i)=> d.classList.toggle('active', i===idx));
-      }
-      track.addEventListener('scroll', () => { requestAnimationFrame(updateDots); });
-      updateDots();
-    })();
+<script>
+  if (window.Kakao && !Kakao.isInitialized()) {
+    Kakao.init('b9a150ba7c273d7bc9534df138b54c6e'); // 본인 JS 키
+  }
 
-    // 1) Kakao SDK 초기화 (반드시 JavaScript 키)
-    if (window.Kakao && !Kakao.isInitialized()) {
-      Kakao.init('b9a150ba7c273d7bc9534df138b54c6e'); // ← 본인 JS 키로 교체 가능
-    }
+  function shareKakao() {
+    const detailUrl = 'https://www.miricanvas.com/v2/design2/v/a173f7ca-39e0-419e-be44-f971407cfc90';
+    const callPage  = 'https://vininebeauty2020-ai.github.io/building-project/call.html'; // ↓ 2단계에서 만들 거
 
-    // 2) 카카오톡 공유 (카톡 메시지 카드: 이미지 + 설명 + 버튼)
-    function shareKakao() {
-      const linkUrl = 'https://www.miricanvas.com/v2/design2/v/a173f7ca-39e0-419e-be44-f971407cfc90';
-      Kakao.Share.sendDefault({
-        objectType: 'feed',
-        content: {
-          title: '부산 오션뷰 상가 매입제안서',
-          description: '이미지나 버튼을 누르면 상세페이지로 이동합니다.',
-          imageUrl: 'https://vininebeauty2020-ai.github.io/building-project/1.png',
-          link: { webUrl: linkUrl, mobileWebUrl: linkUrl }
+    Kakao.Share.sendDefault({
+      objectType: 'feed',
+      content: {
+        title: '부산 오션뷰 상가 매입제안서',
+        description: '이미지나 버튼을 누르면 상세페이지로 이동합니다.',
+        imageUrl: 'https://vininebeauty2020-ai.github.io/building-project/busan.png',
+        link: { webUrl: detailUrl, mobileWebUrl: detailUrl } // 이미지/제목 눌러도 이동
+      },
+      buttons: [
+        { // 버튼 1: 상세보기(미리캔버스)
+          title: '상가 자세히 보기',
+          link: { webUrl: detailUrl, mobileWebUrl: detailUrl }
         },
-        // 좋아요/댓글 숫자는 사용 안 함
-        buttons: [
-          { title: '상가 자세히 보기', link: { webUrl: linkUrl, mobileWebUrl: linkUrl } }
-        ]
-      });
-    }
+        { // 버튼 2: 문의하기(전화 전용 미니 페이지로)
+          title: '전화문의',
+          link: { webUrl: callPage, mobileWebUrl: callPage }
+        }
+      ]
+    });
+  }
+</script>
 
-    // 3) 복사 버튼
-    function copyLink(){
-      const text = document.getElementById('shareLink').textContent.trim();
-      navigator.clipboard.writeText(text).then(()=> alert('링크를 복사했어요!'));
-    }
-  </script>
 </body>
 </html>
